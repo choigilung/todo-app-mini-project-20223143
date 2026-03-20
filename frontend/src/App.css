@@ -1,0 +1,112 @@
+/* 전체 배경: 깊은 우주 느낌의 그라데이션 */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at center, #24243e, #0f0c29); /* 진한 네이비 그라데이션 */
+  margin: 0;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 카드: 유리처럼 뒤가 비치는 효과 */
+.card {
+  background: rgba(255, 255, 255, 0.05); /* 반투명 화이트 */
+  backdrop-filter: blur(15px); /* 배경 흐리게 (핵심!) */
+  padding: 40px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 얇은 유리 테두리 */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 450px;
+}
+
+h1 { 
+  color: #fff; 
+  text-shadow: 0 0 10px rgba(187, 134, 252, 0.8); /* 글자 광택 효과 */
+  text-align: center; 
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* 입력 그룹 */
+.input-group {
+  display: flex;
+  background: rgba(112, 45, 92, 0.736);
+  padding: 5px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+input {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  background: transparent;
+  color: rgb(39, 117, 39);
+  font-size: 16px;
+  outline: none;
+}
+
+/* 추가 버튼: 네온 그라데이션 */
+button {
+  padding: 12px 25px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(45deg, #bb86fc, #03dac6);
+  color: #000;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+  transform: scale(1.05);
+}
+
+/* 리스트 아이템: 둥실둥실 떠 있는 느낌 */
+.todo-list { list-style: none; padding: 0; }
+
+.todo-item {
+  background: rgba(114, 22, 83, 0.274);
+  margin-bottom: 15px;
+  padding: 18px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(178, 35, 35, 0.432);
+  transition: 0.3s;
+}
+
+.todo-item:hover {
+  background: rgba(178, 184, 17, 0.839);
+  transform: translateX(5px); /* 마우스 올리면 살짝 오른쪽으로 이동 */
+}
+
+/* 체크박스 & 텍스트 */
+.todo-item span {
+  color: #196e45 !important;
+  font-size: 1.1rem;
+}
+
+.completed span {
+  color: #666;
+  text-decoration: line-through;
+}
+
+/* 삭제 버튼: 강렬한 레드 포인트 */
+.delete-btn {
+  background: rgba(207, 102, 121, 0.2) !important;
+  color: #ffb4ab !important;
+  border: 1px solid rgba(207, 102, 121, 0.4) !important;
+  padding: 6px 12px !important;
+  font-size: 13px !important;
+}
+
+.delete-btn:hover {
+  background: #cf6679 !important;
+  color: white !important;
+}

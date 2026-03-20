@@ -1,0 +1,205 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+
+function App() {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState('');
+
+  const fetchTodos = async () => {
+    try {
+      const res = await axios.get('http://172.21.204.240:5000/api/todos');
+      setTodos(res.data);
+    } catch (err) { console.error(err); }
+  };
+
+  useEffect(() => { fetchTodos(); }, []);
+
+  const addTodo = async () => {
+    if (!input) return;
+    await axios.post('http://172.21.204.240:5000/api/todos', { title: input });
+    setInput('');
+    fetchTodos();
+  };
+  
+  const toggleTodo = async (id, completed) => {
+    try {
+      await axios.put(`http://172.21.204.240:5000/api/todos/${id}`, { completed: !completed });
+      fetchTodos(); 
+    } catch (err) {
+      console.error("상태 변경 실패:", err);
+    }
+  };
+
+  const deleteTodo = async (id) => {
+    await axios.delete(`http://172.21.204.240:5000/api/todos/${id}`);
+    fetchTodos();
+  };
+
+  return (
+    <div style={styles.container}>
+      {/* 📊 1. 사이드바 (정보창) */}
+      <div style={styles.sidebar}>
+        <h2 style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
+          📊 Dashboard
+        </h2>
+        
+        <div style={styles.infoBox}>
+          <p style={{ margin: '10px 0' }}>✅ 완료한 일: {todos.filter(t => t.completed).length}개</p>
+          <p style={{ margin: '10px 0' }}>⏳ 남은 일: {todos.filter(t => !t.completed).length}개</p>
+          <p style={{ margin: '10px 0', fontSize: '0.9rem', opacity: 0.7 }}>📅 {new Date().toLocaleDateString()}</p>
+        </div>
+
+        <hr style={{ opacity: 0.1, margin: '30px 0' }} />
+        
+        <div style={{ padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px' }}>
+          <p style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+            💡 <b>오늘의 한마디:</b><br />
+            공부용 브랜치에서 마음껏 도전해보세요!
+          </p>
+        </div>
+      </div>
+
+      {/* 🎯 2. 메인 콘텐츠 (여기가 중요! card를 감싸야 합니다) */}
+      <div style={styles.mainContent}>
+        <div style={styles.card}>
+          <h1 style={styles.title}>📝 My Todo List</h1>
+
+          {/* 입력 구역 */}
+          <div style={styles.inputGroup}>
+            <input
+              style={styles.input}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="할 일을 입력하세요..."
+            />
+            <button style={styles.addButton} onClick={addTodo}>추가</button>
+          </div>
+
+          {/* 리스트 구역 */}
+          <ul style={styles.list}>
+            {todos.map(todo => (
+              <li key={todo._id} style={styles.listItem}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={() => toggleTodo(todo._id, todo.completed)}
+                  />
+                  <span style={{
+                    textDecoration: todo.completed ? 'line-through' : 'none',
+                    color: todo.completed ? '#807b22' : '#ffffff', // 다크모드에 맞게 흰색으로 변경
+                    fontSize: '1.1rem'
+                  }}>
+                    {todo.title}
+                  </span>
+                </div>
+                <button 
+                  style={styles.deleteButton} 
+                  onClick={() => deleteTodo(todo._id)}
+                >
+                  삭제
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 간단한 스타일 설정
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    minHeight: '100vh',
+    width: '100vw',
+    background: 'linear-gradient(135deg, #121212 0%, #1e1e2f 100%)',
+    color: '#ffffff',
+    margin: 0,
+    fontFamily: 'sans-serif',
+  },
+  sidebar: {
+    width: '260px',
+    padding: '40px 25px',
+    background: 'rgba(255, 255, 255, 0.03)',
+    borderRight: '1px solid rgba(255, 255, 255, 0.1)',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  infoBox: {
+    padding: '20px',
+    background: 'rgba(255, 255, 255, 0.07)',
+    borderRadius: '15px',
+    fontSize: '1rem',
+  },
+  mainContent: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '40px',
+  },
+  card: {
+    width: '100%',
+    maxWidth: '550px',
+    background: 'rgba(30, 30, 30, 0.8)',
+    padding: '40px',
+    borderRadius: '25px',
+    boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+    backdropFilter: 'blur(10px)',
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: '30px',
+    fontSize: '2rem',
+    color: '#bb86fc',
+  },
+  inputGroup: {
+    display: 'flex',
+    gap: '10px',
+    marginBottom: '30px',
+  },
+  input: {
+    flex: 1,
+    padding: '12px 15px',
+    borderRadius: '10px',
+    border: '1px solid #444',
+    background: '#2c2c2c',
+    color: '#fff',
+    outline: 'none',
+  },
+  addButton: {
+    padding: '12px 20px',
+    borderRadius: '10px',
+    border: 'none',
+    background: '#03dac6',
+    color: '#000',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+  },
+  list: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  listItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '15px',
+    borderBottom: '1px solid rgba(255,255,255,0.05)',
+  },
+  deleteButton: {
+    background: 'transparent',
+    color: '#ff4b2b',
+    border: '1px solid #ff4b2b',
+    padding: '5px 10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '0.8rem',
+  }
+};
+
+export default App;
