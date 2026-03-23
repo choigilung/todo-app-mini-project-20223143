@@ -73,6 +73,11 @@ app.delete('/api/todos/:id', async (req, res) => {
 
 // --- 5. 서버 실행 ---
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다!`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 서버가 포트 ${PORT}에서 실행 중입니다!`);
+  });
+}
+
+// Vercel Serverless 배포를 위한 export
+module.exports = app;
