@@ -6,9 +6,11 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
 
+  const API_URL = import.meta.env.VITE_API_URL || '/api/todos';
+
   const fetchTodos = async () => {
     try {
-      const res = await axios.get('http://172.21.204.240:5000/api/todos');
+      const res = await axios.get(API_URL);
       setTodos(res.data);
     } catch (err) { console.error(err); }
   };
@@ -17,14 +19,14 @@ function App() {
 
   const addTodo = async () => {
     if (!input) return;
-    await axios.post('http://172.21.204.240:5000/api/todos', { title: input });
+    await axios.post(API_URL, { title: input });
     setInput('');
     fetchTodos();
   };
   
   const toggleTodo = async (id, completed) => {
     try {
-      await axios.put(`http://172.21.204.240:5000/api/todos/${id}`, { completed: !completed });
+      await axios.put(`${API_URL}/${id}`, { completed: !completed });
       fetchTodos(); 
     } catch (err) {
       console.error("상태 변경 실패:", err);
@@ -32,7 +34,7 @@ function App() {
   };
 
   const deleteTodo = async (id) => {
-    await axios.delete(`http://172.21.204.240:5000/api/todos/${id}`);
+    await axios.delete(`${API_URL}/${id}`);
     fetchTodos();
   };
 
@@ -55,7 +57,7 @@ function App() {
         <div style={{ padding: '10px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px' }}>
           <p style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
             💡 <b>오늘의 한마디:</b><br />
-            공부용 브랜치에서 마음껏 도전해보세요!
+            YOU NEVER WALK ALONE
           </p>
         </div>
       </div>
