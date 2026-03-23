@@ -40,7 +40,6 @@ function App() {
 
   return (
     <div style={styles.container}>
-      {/* 📊 1. 사이드바 (정보창) */}
       <div style={styles.sidebar}>
         <h2 style={{ fontSize: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
           📊 Dashboard
@@ -62,12 +61,10 @@ function App() {
         </div>
       </div>
 
-      {/* 🎯 2. 메인 콘텐츠 (여기가 중요! card를 감싸야 합니다) */}
       <div style={styles.mainContent}>
         <div style={styles.card}>
           <h1 style={styles.title}>📝 My Todo List</h1>
 
-          {/* 입력 구역 */}
           <div style={styles.inputGroup}>
             <input
               style={styles.input}
@@ -78,7 +75,6 @@ function App() {
             <button style={styles.addButton} onClick={addTodo}>추가</button>
           </div>
 
-          {/* 리스트 구역 */}
           <ul style={styles.list}>
             {todos.map(todo => (
               <li key={todo._id} style={styles.listItem}>
@@ -90,7 +86,7 @@ function App() {
                   />
                   <span style={{
                     textDecoration: todo.completed ? 'line-through' : 'none',
-                    color: todo.completed ? '#807b22' : '#ffffff', // 다크모드에 맞게 흰색으로 변경
+                    color: todo.completed ? '#807b22' : '#ffffff',
                     fontSize: '1.1rem'
                   }}>
                     {todo.title}
@@ -111,7 +107,6 @@ function App() {
   );
 }
 
-// 간단한 스타일 설정
 const styles = {
   container: {
     display: 'flex',
